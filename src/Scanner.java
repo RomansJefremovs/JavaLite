@@ -98,6 +98,15 @@ public class Scanner {
             takeNextChar();
             return TokenKind.RIGHTPARAN;
 
+        case '{':
+            takeNextChar();
+            return TokenKind.RIGHTCURLY;
+
+        case '}':
+            takeNextChar();
+            return TokenKind.LEFTCURLY;
+
+
         case SourceFile.EOT:
             return TokenKind.EOT;
 
