@@ -1,8 +1,13 @@
 public enum TokenKind {
     IDENTIFIER,
     INTEGERLITERAL,
+    OPERATOR,
     IF,
     ELSE,
+    COMMA,
+    SEMICOLON,
+    LEFTPARAN,
+    RIGHTPARAN,
     FUNC,
     TRUE,
     FALSE,
@@ -15,7 +20,9 @@ public enum TokenKind {
     WHILE,
     SHOW,
     ENTERINTMESSAGE,
-    ENETERBOOLEANMESSAGE,
+    ENTERBOOLEANMESSAGE,
+    READINT,
+    READBOOLEAN,
     INT,
     BOOLEAN,
     IS,
@@ -25,5 +32,26 @@ public enum TokenKind {
     NOT,
     EQUALS,
     EOT,
-    ERROR
+    ERROR;
+
+    private String spelling = null;
+
+
+    private TokenKind()
+    {
+    }
+
+
+    private TokenKind( String spelling )
+    {
+        this.spelling = spelling;
+    }
+
+
+    public String getSpelling()
+    {
+        return spelling;
+    }
 }
+
+
