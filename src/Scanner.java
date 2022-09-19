@@ -18,14 +18,15 @@ public class Scanner {
     }
 
 
-    public boolean CharacterIsLetter(char a) {
-            return !Character.isDigit(a);
-            //TODO: Factor in symbols?
+    private boolean isLetter( char c )
+    {
+        return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
     }
 
-    public boolean CharacterIsDigit(char a) {
-        return Character.isDigit(a);
-        //TODO: Factor in symbols?
+
+    private boolean isDigit( char c )
+    {
+        return c >= '0' && c <= '9';
     }
 
 
@@ -66,16 +67,16 @@ public class Scanner {
 
     private TokenKind scanToken()
     {
-        if( CharacterIsLetter( currentChar ) ) {
+        if( isLetter( currentChar ) ) {
             takeNextChar();
-            while( CharacterIsLetter( currentChar ) || CharacterIsDigit( currentChar ) )
+            while( isLetter( currentChar ) || isDigit( currentChar ))
                 takeNextChar();
 
             return TokenKind.IDENTIFIER;
 
-        } else if( CharacterIsDigit( currentChar ) ) {
+        } else if( isDigit( currentChar ) ) {
             takeNextChar();
-            while( CharacterIsDigit( currentChar ) )
+            while( isDigit( currentChar ) )
                 takeNextChar();
 
             return TokenKind.INTEGERLITERAL;
@@ -100,11 +101,11 @@ public class Scanner {
 
         case '{':
             takeNextChar();
-            return TokenKind.RIGHTCURLY;
+            return TokenKind.LEFTCURLY;
 
         case '}':
             takeNextChar();
-            return TokenKind.LEFTCURLY;
+            return TokenKind.RIGHTCURLY;
 
 
         case SourceFile.EOT:

@@ -2,6 +2,11 @@ public enum TokenKind {
     IDENTIFIER,
     INTEGERLITERAL,
     OPERATOR,
+
+    RIGHTCURLY("}"),
+    LEFTCURLY("{"),
+    PROGRAM("program"),
+
     IF("if"),
     ELSE("else"),
     COMMA(","),
@@ -31,6 +36,8 @@ public enum TokenKind {
     MAP("map"),
     NOT("not"),
     EQUALS("equals"),
+
+
     EOT,
     ERROR;
 
