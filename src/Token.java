@@ -24,10 +24,10 @@ public class Token {
 
 	private static final TokenKind[] KEYWORDS = { TokenKind.IF, TokenKind.ELSE, TokenKind.FUNC, TokenKind.TRUE, TokenKind.FALSE, TokenKind.RETURN, TokenKind.MAP,
 													 TokenKind.INT, TokenKind.BOOLEAN, TokenKind.ENTERBOOLEANMESSAGE, TokenKind.ENTERINTMESSAGE,
-													TokenKind.READINT, TokenKind.READBOOLEAN, TokenKind.WHILE, TokenKind.SHOW, TokenKind.PROGRAM};
+													TokenKind.READINT, TokenKind.READBOOLEAN, TokenKind.WHILE, TokenKind.SHOW, TokenKind.PROGRAM, TokenKind.IS};
 
 	private static final TokenKind[] OPERATOR = { TokenKind.PLUS, TokenKind.MINUS,
-			TokenKind.MULTIPLY, TokenKind.DIVIDE, TokenKind.EQUALS, TokenKind.NOT, TokenKind.OR, TokenKind.AND, TokenKind.MODULUS, TokenKind.IS};
+			TokenKind.MULTIPLY, TokenKind.DIVIDE, TokenKind.EQUALS, TokenKind.NOT, TokenKind.OR, TokenKind.AND, TokenKind.MODULUS};
 
 
 }
