@@ -14,7 +14,9 @@ import javax.swing.*;
 
 public class TestDriverScanner
 {
+    //Put in your own textfile
     private static final String EXAMPLES_DIR = "C:\\Users\\Sjunn\\OneDrive\\Skrivebord\\CMC\\1stTestProgram.txt";
+
 
 
     public static void main( String args[] )
