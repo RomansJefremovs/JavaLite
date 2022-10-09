@@ -1,8 +1,7 @@
 public class Parser {
-    private Scanner scan;
+    private final Scanner scan;
     private Token currentToken;
 
-    //TODO: Check if leftCurly should be part of block
 
     public Parser( Scanner scan )
     {
@@ -105,8 +104,36 @@ public class Parser {
                 accept(TokenKind.LEFTPARAN);
                 accept(TokenKind.RIGHTPARAN);
                 break;
+            case IDENTIFIER:
+                //Only in case of calling a method
+                accept(TokenKind.IDENTIFIER);
+                if(currentToken.kind == TokenKind.LEFTPARAN)
+                {
+                    accept(TokenKind.LEFTPARAN);
+                    if(currentToken.kind == TokenKind.IDENTIFIER)
+                    {
+                        accept(TokenKind.IDENTIFIER);
+                        accept(TokenKind.RIGHTPARAN);
+                    }
+                    else if (currentToken.kind == TokenKind.INTEGERLITERAL)
+                    {
+                        accept(TokenKind.INTEGERLITERAL);
+                        accept(TokenKind.RIGHTPARAN);
+                    }
+                    else if (currentToken.kind == TokenKind.TRUE)
+                    {
+                        accept(TokenKind.TRUE);
+                        accept(TokenKind.RIGHTPARAN);
+                    }
+                    else if (currentToken.kind == TokenKind.FALSE)
+                    {
+                        accept(TokenKind.FALSE);
+                        accept(TokenKind.RIGHTPARAN);
+                    }
+                }
+                break;
             default:
-                System.out.println( "statement expected (parseStatement)" );
+                System.out.println( "statement expected (parseStatement)" + currentToken.spelling );
         }
 
     }
@@ -135,7 +162,6 @@ public class Parser {
             }
         }
     }
-
 
     private void declareDeclarations() {
         while(isADeclaration())
