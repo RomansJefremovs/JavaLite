@@ -1,9 +1,9 @@
 package AST;
 
-public class IfStatement extends Statement {
+public class WhileStatement extends Statement {
     public ExpList expList;
     public Block block;
-    public IfStatement(ExpList expList, Block block) {
+    public WhileStatement(ExpList expList, Block block) {
         this.expList = expList;
         this.block = block;
     }

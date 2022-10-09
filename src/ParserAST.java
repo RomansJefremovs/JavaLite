@@ -41,14 +41,14 @@ public class ParserAST {
                 }
                 if(isAStatement())
                 {
-                    declareStatements();
+                    statements.stat.addAll(Objects.requireNonNull(declareStatements()).stat);
                 }
             }
         return new Block(decs, statements);
     }
 
     private Statements declareStatements() {
-        Statements statements = null;
+        Statements statements = new Statements();
         while(isAStatement())
         {
             Statement stat = parseStatement();
@@ -63,7 +63,7 @@ public class ParserAST {
                 accept(TokenKind.IF);
                 accept(TokenKind.LEFTPARAN);
                 if(currentToken.kind == TokenKind.OPERATOR)
-                    System.out.println( "Cant start with a WordOperator" );
+                    System.out.println( "Cant start with a WordOperator" + currentToken.spelling );
                 ExpList expList = parseExpressions();
                 accept(TokenKind.RIGHTPARAN);
                 accept(TokenKind.LEFTCURLY);
@@ -74,63 +74,45 @@ public class ParserAST {
                 accept(TokenKind.WHILE);
                 accept(TokenKind.LEFTPARAN);
                 if(currentToken.kind == TokenKind.OPERATOR)
-                    System.out.println( "Cant start with a WordOperator" );
-                parseExpressions();
+                    System.out.println( "Cant start with a WordOperator" + currentToken.spelling);
+                ExpList expList1 = parseExpressions();
                 accept(TokenKind.RIGHTPARAN);
                 accept(TokenKind.LEFTCURLY);
-                parseBlock();
+                Block block1 = parseBlock();
                 accept(TokenKind.RIGHTCURLY);
-                break;
+                return new WhileStatement(expList1, block1);
             case SHOW:
                 accept(TokenKind.SHOW);
                 accept(TokenKind.LEFTPARAN);
                 if(currentToken.kind == TokenKind.OPERATOR)
-                    System.out.println( "Cant start with a WordOperator" );
-                parseExpressions();
+                    System.out.println( "Cant start with a WordOperator" + currentToken.spelling );
+                Expression expression = parseExpression();
                 accept(TokenKind.RIGHTPARAN);
-                break;
+                return new ShowStatement(expression);
             case READBOOLEAN:
+                ReadBooleanStatement statement = new ReadBooleanStatement(new ReadBoolean(new BooleanLiteral(currentToken.spelling)));
                 accept(TokenKind.READBOOLEAN);
                 accept(TokenKind.LEFTPARAN);
                 accept(TokenKind.RIGHTPARAN);
-                break;
+                return statement;
             case READINT:
+                ReadIntStatement statement2 = new ReadIntStatement(new ReadInteger(new IntegerLiteral(currentToken.spelling)));
                 accept(TokenKind.READINT);
                 accept(TokenKind.LEFTPARAN);
                 accept(TokenKind.RIGHTPARAN);
-                break;
+                return statement2;
             case IDENTIFIER:
                 //Only in case of calling a method
+                Identifier id = new Identifier(currentToken.spelling);
                 accept(TokenKind.IDENTIFIER);
-                if(currentToken.kind == TokenKind.LEFTPARAN)
-                {
-                    accept(TokenKind.LEFTPARAN);
-                    if(currentToken.kind == TokenKind.IDENTIFIER)
-                    {
-                        accept(TokenKind.IDENTIFIER);
-                        accept(TokenKind.RIGHTPARAN);
-                    }
-                    else if (currentToken.kind == TokenKind.INTEGERLITERAL)
-                    {
-                        accept(TokenKind.INTEGERLITERAL);
-                        accept(TokenKind.RIGHTPARAN);
-                    }
-                    else if (currentToken.kind == TokenKind.TRUE)
-                    {
-                        accept(TokenKind.TRUE);
-                        accept(TokenKind.RIGHTPARAN);
-                    }
-                    else if (currentToken.kind == TokenKind.FALSE)
-                    {
-                        accept(TokenKind.FALSE);
-                        accept(TokenKind.RIGHTPARAN);
-                    }
-                }
-                break;
+                accept(TokenKind.LEFTPARAN);
+                ExpList list = parseExpressions();
+                accept(TokenKind.RIGHTPARAN);
+                return new IdentifierStatement(id, list);
             default:
                 System.out.println( "statement expected (parseStatement)" + currentToken.spelling );
+                return null; //TODO: THROW ERROR
         }
-
     }
 
     private ExpList parseExpressions() {
@@ -146,9 +128,9 @@ public class ParserAST {
         String booleanValue;
         switch (currentToken.kind) {
             case IDENTIFIER:
-                //TODO: VIGTIGT
+                IdentifierExpression id = new IdentifierExpression(new Identifier(currentToken.spelling));
                 accept(TokenKind.IDENTIFIER);
-                break;
+                return id;
             case INTEGERLITERAL:
                 String integerValue = currentToken.spelling;
                 accept(TokenKind.INTEGERLITERAL);
@@ -166,13 +148,13 @@ public class ParserAST {
                 accept(TokenKind.OPERATOR);
                 return new OperatorLitExpression(new Operator(operatorSpelling));
             default:
-                System.out.println("expression expected (parseExpression)");
+                System.out.println("expression expected (parseExpression)" + currentToken.spelling);
+                return null; //TODO: THROW ERROR
         }
-        return null; //TODO: THROW EXCEPTION
     }
 
     private Declarations declareDeclarations() {
-        Declarations decs = null;
+        Declarations decs = new Declarations();
         while(isADeclaration())
         {
             decs.dec.add(parseOneDeclaration());
@@ -186,9 +168,9 @@ public class ParserAST {
                 accept(TokenKind.INT);
                 Identifier id = parseIdentifier();
                 accept(TokenKind.IS);
-                int value = Integer.parseInt(currentToken.spelling);
+                String value = currentToken.spelling;
                 accept(TokenKind.INTEGERLITERAL);
-                return new IntDeclaration(id, value);
+                return new IntDeclaration(id, new IntegerLiteral(value));
             case BOOLEAN:
                 ExpList expList = null;
                 accept(TokenKind.BOOLEAN);
@@ -202,7 +184,7 @@ public class ParserAST {
                 {
                     accept(TokenKind.LEFTPARAN);
                     if(currentToken.kind == TokenKind.OPERATOR)
-                        System.out.println( "Cant start with a WordOperator" );
+                        System.out.println( "Cant start with a WordOperator" + currentToken.spelling);
                     expList = parseExpressions();
                     accept(TokenKind.RIGHTPARAN);
                 }
@@ -221,7 +203,8 @@ public class ParserAST {
                 accept(TokenKind.RIGHTCURLY);
                 return new FunctionDeclaration(name, declarations, blockFunc);
             default:
-                System.out.println("bool or func or int expected");
+                System.out.println("bool or func or int expected" + currentToken.spelling);
+                return null; //TODO: THROW ERROR
         }
     }
 
@@ -271,7 +254,7 @@ public class ParserAST {
             currentToken = scan.scan();
         }
         else
-            System.out.println( "Expected token of kind " + expected );
+            System.out.println( "Expected token of kind " + expected + "current: " + currentToken.spelling );
     }
 
 

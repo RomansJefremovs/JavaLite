@@ -3,16 +3,17 @@ package AST;
 public class IntDeclaration  extends Declaration {
 
     public Identifier name;
-    public int value;
+    public IntegerLiteral value;
 
 
-    public IntDeclaration( Identifier name, int value )
+    public IntDeclaration( Identifier name, IntegerLiteral value )
     {
         this.name = name;
         this.value = value;
     }
 
     public IntDeclaration(Identifier name) {
-        super();
+
+        this.name = name;
     }
 }

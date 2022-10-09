@@ -1,8 +1,8 @@
 package AST;
 
 public class BooleanDeclaration extends Declaration{
-    Identifier value;
-    ExpList expList;
+    public Identifier value;
+    public ExpList expList;
 
     public BooleanDeclaration(Identifier value, ExpList list)
     {

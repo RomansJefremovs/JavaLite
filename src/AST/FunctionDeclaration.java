@@ -15,8 +15,7 @@ public class FunctionDeclaration
 	public Identifier name;
 	public Declarations params;
 	public Block block;
-	public Expression retExp;
-	
+
 	
 	public FunctionDeclaration(Identifier name, Declarations params,
                                Block block )
@@ -24,6 +23,5 @@ public class FunctionDeclaration
 		this.name = name;
 		this.params = params;
 		this.block = block;
-		this.retExp = retExp;
 	}
 }
