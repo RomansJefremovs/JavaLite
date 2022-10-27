@@ -1,5 +1,5 @@
 package AST;
-
+import AST.Visitor;
 public class WhileStatement extends Statement {
     public ExpList expList;
     public Block block;
@@ -7,4 +7,10 @@ public class WhileStatement extends Statement {
         this.expList = expList;
         this.block = block;
     }
+
+    public Object visit(Visitor v, Object arg )
+    {
+        return v.visitWhileStatement(this, arg );
+    }
+
 }

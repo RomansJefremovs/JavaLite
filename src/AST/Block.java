@@ -6,7 +6,7 @@
  */
  
 package AST;
-
+import AST.Visitor;
 
 public class Block
 	extends AST
@@ -19,5 +19,9 @@ public class Block
 	{
 		this.decs = decs;
 		this.stats = stats;
+	}
+	public Object visit(Visitor v, Object arg )
+	{
+		return v.visitBlock( this, arg );
 	}
 }

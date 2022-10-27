@@ -1,5 +1,5 @@
 package AST;
-
+import  AST.Visitor;
 public class Program
 	extends AST
 {
@@ -9,5 +9,10 @@ public class Program
 	public Program( Block block )
 	{
 		this.block = block;
+	}
+
+	public Object visit(Visitor v, Object arg )
+	{
+		return v.visitProgram( this, arg );
 	}
 }

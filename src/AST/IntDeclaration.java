@@ -1,5 +1,5 @@
 package AST;
-
+import AST.Visitor;
 public class IntDeclaration  extends Declaration {
 
     public Identifier name;
@@ -15,5 +15,10 @@ public class IntDeclaration  extends Declaration {
     public IntDeclaration(Identifier name) {
 
         this.name = name;
+    }
+
+    public Object visit(Visitor v, Object arg )
+    {
+        return v.visitIntDeclaration(this, arg );
     }
 }

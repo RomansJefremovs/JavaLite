@@ -6,7 +6,7 @@
  */
  
 package AST;
-
+import AST.Visitor;
 
 public class CallExpression
 	extends Expression
@@ -19,5 +19,10 @@ public class CallExpression
 	{
 		this.name = name;
 		this.args = args;
+	}
+
+	public Object visit(Visitor v, Object arg )
+	{
+		return v.visitCallExpression(this, arg );
 	}
 }

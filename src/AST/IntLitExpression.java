@@ -6,7 +6,7 @@
  */
  
 package AST;
-
+import AST.Visitor;
 
 public class IntLitExpression
 	extends Expression
@@ -17,5 +17,11 @@ public class IntLitExpression
 	public IntLitExpression(IntegerLiteral literal )
 	{
 		this.literal = literal;
+	}
+
+
+	public Object visit(Visitor v, Object arg )
+	{
+		return v.visitIntLitExpression(this, arg );
 	}
 }

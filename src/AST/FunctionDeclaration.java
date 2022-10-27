@@ -7,7 +7,7 @@
  */
  
 package AST;
-
+import AST.Visitor;
 
 public class FunctionDeclaration
 	extends Declaration
@@ -23,5 +23,11 @@ public class FunctionDeclaration
 		this.name = name;
 		this.params = params;
 		this.block = block;
+	}
+
+
+	public Object visit(Visitor v, Object arg )
+	{
+		return v.visitFunctionDeclaration( this, arg );
 	}
 }

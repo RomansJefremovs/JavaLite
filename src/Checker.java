@@ -44,107 +44,107 @@ public class Checker implements Visitor {
     }
 
     @Override
-    public Object visitReadIntegerStatement(AST.ReadIntStatement o, Object arg) {
+    public Object visitReadIntegerStatement(ReadIntStatement o, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitReadInteger(AST.ReadInteger o, Object arg) {
+    public Object visitReadInteger(ReadInteger o, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitReadBooleanStatement(AST.ReadBooleanStatement o, Object arg) {
+    public Object visitReadBooleanStatement( ReadBooleanStatement o, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitReadBoolean(AST.ReadBoolean o, Object arg) {
+    public Object visitReadBoolean( ReadBoolean o, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitOperator(AST.Operator o, Object arg) {
+    public Object visitOperator( Operator o, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitBooleanLiteral(AST.BooleanLiteral i, Object arg) {
+    public Object visitBooleanLiteral( BooleanLiteral i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIntegerLiteral(AST.IntegerLiteral i, Object arg) {
+    public Object visitIntegerLiteral( IntegerLiteral i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIdentifier(AST.Identifier i, Object arg) {
+    public Object visitIdentifier( Identifier i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitExpList(AST.ExpList e, Object arg) {
+    public Object visitExpList( ExpList e, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitOperatorLitExpression(AST.OperatorLitExpression i, Object arg) {
+    public Object visitOperatorLitExpression( OperatorLitExpression i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitBooleanLitExpression(AST.BooleanLitExpression i, Object arg) {
+    public Object visitBooleanLitExpression( BooleanLitExpression i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIdentifierExpression(AST.IdentifierExpression i, Object arg) {
+    public Object visitIdentifierExpression( IdentifierExpression i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIntLitExpression(AST.IntLitExpression i, Object arg) {
+    public Object visitIntLitExpression( IntLitExpression i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitCallExpression(AST.CallExpression c, Object arg) {
+    public Object visitCallExpression( CallExpression c, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitShowStatement(AST.ShowStatement s, Object arg) {
+    public Object visitShowStatement( ShowStatement s, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitWhileStatement(AST.WhileStatement w, Object arg) {
+    public Object visitWhileStatement( WhileStatement w, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIfStatement(AST.IfStatement i, Object arg) {
+    public Object visitIfStatement( IfStatement i, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIdentifierStatement(AST.IdentifierStatement s, Object arg) {
+    public Object visitIdentifierStatement( IdentifierStatement s, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitStatements(AST.Statements s, Object arg) {
+    public Object visitStatements( Statements s, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIntDeclaration(AST.IntDeclaration f, Object arg) {
+    public Object visitIntDeclaration( IntDeclaration f, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitFunctionDeclaration(AST.FunctionDeclaration f, Object arg) {
+    public Object visitFunctionDeclaration( FunctionDeclaration f, Object arg) {
         return null;
     }
 
