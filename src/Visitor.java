@@ -54,4 +54,6 @@ package AST;
         public Object visitReadInteger( ReadInteger o, Object arg );
 
         public Object visitReadIntegerStatement( ReadIntStatement o, Object arg );
+
+        public Object visitBinaryExpression(BinaryExpression o, Object arg);
     }

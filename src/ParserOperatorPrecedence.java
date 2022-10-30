@@ -1,6 +1,7 @@
 import AST.*;
 
 import java.util.Objects;
+import java.util.Stack;
 
 public class ParserOperatorPrecedence {
     private final Scanner scan;
@@ -64,7 +65,7 @@ public class ParserOperatorPrecedence {
                 accept(TokenKind.LEFTPARAN);
                 if(currentToken.kind == TokenKind.OPERATOR)
                     System.out.println( "Cant start with a WordOperator" + currentToken.spelling );
-                ExpList expList = parseExpressions();
+                ExpList expList = parseBooleanOrMethodExpressionList();
                 accept(TokenKind.RIGHTPARAN);
                 accept(TokenKind.LEFTCURLY);
                 Block block = parseBlock();
@@ -75,7 +76,7 @@ public class ParserOperatorPrecedence {
                 accept(TokenKind.LEFTPARAN);
                 if(currentToken.kind == TokenKind.OPERATOR)
                     System.out.println( "Cant start with a WordOperator" + currentToken.spelling);
-                ExpList expList1 = parseExpressions();
+                ExpList expList1 = parseBooleanOrMethodExpressionList();
                 accept(TokenKind.RIGHTPARAN);
                 accept(TokenKind.LEFTCURLY);
                 Block block1 = parseBlock();
@@ -106,7 +107,7 @@ public class ParserOperatorPrecedence {
                 Identifier id = new Identifier(currentToken.spelling);
                 accept(TokenKind.IDENTIFIER);
                 accept(TokenKind.LEFTPARAN);
-                ExpList list = parseExpressions();
+                ExpList list = parseBooleanOrMethodExpressionList();
                 accept(TokenKind.RIGHTPARAN);
                 return new IdentifierStatement(id, list);
             default:
@@ -115,7 +116,7 @@ public class ParserOperatorPrecedence {
         }
     }
 
-    private ExpList parseExpressions() {
+    private ExpList parseBooleanOrMethodExpressionList() {
         ExpList expList = new ExpList();
         while(isAExpression())
         {
@@ -153,33 +154,6 @@ public class ParserOperatorPrecedence {
         }
     }
 
-    private Expression parseExpression1()
-    {
-        Expression res = parseExpression2();
-        while( currentToken.kind == TokenKind.PLUS ) {
-            Operator op = parseOperator();
-            Expression tmp = parseExpression2();
-
-            res = new BinaryExpression( op, res, tmp );
-        }
-
-        return res;
-    }
-
-
-    private Expression parseExpression2()
-    {
-        Expression res = parsePrimary();
-        while( currentTerminal.isMulOperator() ) {
-            Operator op = parseOperator();
-            Expression tmp = parsePrimary();
-
-            res = new BinaryExpression( op, res, tmp );
-        }
-
-        return res;
-    }
-
     private Operator parseOperator()
     {
         if( currentToken.kind == TokenKind.OPERATOR ) {
@@ -193,7 +167,7 @@ public class ParserOperatorPrecedence {
             return new Operator( "???" );
         }
     }
--
+
     private Declarations declareDeclarations() {
         Declarations decs = new Declarations();
         while(isADeclaration())
@@ -206,27 +180,39 @@ public class ParserOperatorPrecedence {
     private Declaration parseOneDeclaration() {
         switch (currentToken.kind) {
             case INT:
+                ExpList intExpressionList = null;
                 accept(TokenKind.INT);
                 Identifier id = parseIdentifier();
                 accept(TokenKind.IS);
+                //Now we need to take an expressionList
+
+                intExpressionList = parseIntegerExpression();
+                //*this code **//
                 String value = currentToken.spelling;
                 accept(TokenKind.INTEGERLITERAL);
                 return new IntDeclaration(id, new IntegerLiteral(value));
+            //*this code **//
             case BOOLEAN:
-                ExpList expList = null;
+                ExpList expList = new ExpList();
                 accept(TokenKind.BOOLEAN);
                 Identifier idBool = parseIdentifier();
                 accept(TokenKind.IS);
                 if (currentToken.kind == TokenKind.TRUE)
-                    accept(TokenKind.TRUE);
+                {
+                    Expression boolexp = parseExpression();
+                    expList.exp.add(boolexp);
+                }
                 else if (currentToken.kind == TokenKind.FALSE)
-                    accept(TokenKind.FALSE);
+                {
+                    Expression boolexp = parseExpression();
+                    expList.exp.add(boolexp);
+                }
                 else if(currentToken.kind == TokenKind.LEFTPARAN)
                 {
                     accept(TokenKind.LEFTPARAN);
                     if(currentToken.kind == TokenKind.OPERATOR)
                         System.out.println( "Cant start with a WordOperator" + currentToken.spelling);
-                    expList = parseExpressions();
+                    expList = parseBooleanOrMethodExpressionList();
                     accept(TokenKind.RIGHTPARAN);
                 }
                 return new BooleanDeclaration(idBool, expList);
@@ -247,6 +233,102 @@ public class ParserOperatorPrecedence {
                 System.out.println("bool or func or int expected" + currentToken.spelling);
                 return null; //TODO: THROW ERROR
         }
+    }
+
+
+    private ExpList parseIntegerExpressionWithStacks() {
+        Stack<String> integerStack = new Stack<>();
+        Stack<String> operatorStack = new Stack<>();
+
+        while (currentToken.kind == TokenKind.INTEGERLITERAL || currentToken.kind == TokenKind.OPERATOR)
+        {
+            if(currentToken.kind == TokenKind.INTEGERLITERAL)
+            {
+                integerStack.add(currentToken.spelling);
+                accept(TokenKind.INTEGERLITERAL);
+            }
+            if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS || currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS )
+            {
+                operatorStack.add(currentToken.spelling);
+                accept(TokenKind.OPERATOR);
+            }
+        }
+
+        //integerStack = [1, 2, 3, 4]
+        //operatorStack = [+, +, *]
+
+        //WHILE STACK IS NOT EMPTY
+        String tempOp = operatorStack.pop();
+        if(Objects.equals(tempOp, "multiply")) { //or rest
+            String tempNum = integerStack.pop();
+            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(tempNum)),
+                    new IntLitExpression(new IntegerLiteral(integerStack.pop())));
+        }
+        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("PLUS") ||
+                Objects.equals(tempOp, "PLUS") && operatorStack.peek().isEmpty() ) {
+            String firstNum = integerStack.pop();
+            String secondNum = integerStack.pop();
+            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(firstNum)),
+                    new IntLitExpression(new IntegerLiteral(secondNum)));
+        }
+        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("MULTIPLY")) {
+
+        }
+
+    }
+
+    private ExpList parseIntegerExpression() {
+        ExpList expList = new ExpList();
+        Expression tempBinary = parseBinaryExpression();
+        expList.exp.add(tempBinary);
+
+        Expression tempInt;
+
+        if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS) {
+            expList.exp.lastElement()
+        }
+
+    }
+
+    private Expression parseBinaryExpression()
+    {
+        Expression res = parseExpression();
+        if( currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS ||
+                currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS)
+        {
+            Operator op = parseOperator();
+            Expression tmp = parseExpression();
+
+            res = new BinaryExpression( op, res, tmp );
+        }
+        return res;
+    }
+
+    private Expression parseExpression1()
+    {
+        Expression res = parseExpression2();
+        while( currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS ) {
+            Operator op = parseOperator();
+            Expression tmp = parseExpression2();
+
+            res = new BinaryExpression( op, res, tmp );
+        }
+
+        return res;
+    }
+
+
+    private Expression parseExpression2()
+    {
+        Expression res = parseExpression();
+        while( currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS ) {
+            Operator op = parseOperator();
+            Expression tmp = parseExpression();
+
+            res = new BinaryExpression( op, res, tmp );
+        }
+
+        return res;
     }
 
     private Declarations parseIdList() {
