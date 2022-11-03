@@ -1,5 +1,7 @@
 import AST.*;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -236,46 +238,46 @@ public class ParserOperatorPrecedence {
     }
 
 
-    private ExpList parseIntegerExpressionWithStacks() {
-        Stack<String> integerStack = new Stack<>();
-        Stack<String> operatorStack = new Stack<>();
-
-        while (currentToken.kind == TokenKind.INTEGERLITERAL || currentToken.kind == TokenKind.OPERATOR)
-        {
-            if(currentToken.kind == TokenKind.INTEGERLITERAL)
-            {
-                integerStack.add(currentToken.spelling);
-                accept(TokenKind.INTEGERLITERAL);
-            }
-            if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS || currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS )
-            {
-                operatorStack.add(currentToken.spelling);
-                accept(TokenKind.OPERATOR);
-            }
-        }
-
-        //integerStack = [1, 2, 3, 4]
-        //operatorStack = [+, +, *]
-
-        //WHILE STACK IS NOT EMPTY
-        String tempOp = operatorStack.pop();
-        if(Objects.equals(tempOp, "multiply")) { //or rest
-            String tempNum = integerStack.pop();
-            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(tempNum)),
-                    new IntLitExpression(new IntegerLiteral(integerStack.pop())));
-        }
-        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("PLUS") ||
-                Objects.equals(tempOp, "PLUS") && operatorStack.peek().isEmpty() ) {
-            String firstNum = integerStack.pop();
-            String secondNum = integerStack.pop();
-            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(firstNum)),
-                    new IntLitExpression(new IntegerLiteral(secondNum)));
-        }
-        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("MULTIPLY")) {
-
-        }
-
-    }
+//    private ExpList parseIntegerExpressionWithStacks() {
+//        Stack<String> integerStack = new Stack<>();
+//        Stack<String> operatorStack = new Stack<>();
+//
+//        while (currentToken.kind == TokenKind.INTEGERLITERAL || currentToken.kind == TokenKind.OPERATOR)
+//        {
+//            if(currentToken.kind == TokenKind.INTEGERLITERAL)
+//            {
+//                integerStack.add(currentToken.spelling);
+//                accept(TokenKind.INTEGERLITERAL);
+//            }
+//            if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS || currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS )
+//            {
+//                operatorStack.add(currentToken.spelling);
+//                accept(TokenKind.OPERATOR);
+//            }
+//        }
+//
+//        //integerStack = [1, 2, 3, 4]
+//        //operatorStack = [+, +, *]
+//
+//        //WHILE STACK IS NOT EMPTY
+//        String tempOp = operatorStack.pop();
+//        if(Objects.equals(tempOp, "multiply")) { //or rest
+//            String tempNum = integerStack.pop();
+//            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(tempNum)),
+//                    new IntLitExpression(new IntegerLiteral(integerStack.pop())));
+//        }
+//        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("PLUS") ||
+//                Objects.equals(tempOp, "PLUS") && operatorStack.peek().isEmpty() ) {
+//            String firstNum = integerStack.pop();
+//            String secondNum = integerStack.pop();
+//            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(firstNum)),
+//                    new IntLitExpression(new IntegerLiteral(secondNum)));
+//        }
+//        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("MULTIPLY")) {
+//
+//        }
+//
+//    }
 
     private ExpList parseIntegerExpression() {
         ExpList expList = new ExpList();
@@ -285,10 +287,44 @@ public class ParserOperatorPrecedence {
         Expression tempInt;
 
         if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS) {
-            expList.exp.lastElement()
+            expList.exp.lastElement();
         }
 
     }
+//    private ExpList parseIntegerExpressionWithStacks() {
+//        ArrayList<String> integerStack = new ArrayList<>();
+//        ArrayList<String> operatorStack = new ArrayList<>();
+//        while (currentToken.kind == TokenKind.INTEGERLITERAL  || currentToken.kind == TokenKind.OPERATOR)
+//        {
+//            if(currentToken.kind == TokenKind.INTEGERLITERAL)
+//            {
+//                integerStack.add(currentToken.spelling);
+//                accept(TokenKind.INTEGERLITERAL);
+//            }
+//            if( currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS )
+//            {
+//                operatorStack.add(currentToken.spelling);
+//                accept(TokenKind.OPERATOR);
+//            } else if (currentToken.kind == TokenKind.MULTIPLY ||  currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS) {
+//                operatorStack.add(currentToken.spelling);
+//                int index = operatorStack.size()-1;
+//                int indexIntLast = integerStack.size();
+//                int indexIntPrev = integerStack.size()-1;
+//                while (operatorStack.get(index).equals(TokenKind.PLUS) || operatorStack.get(index).equals(TokenKind.MINUS)){
+//                    String tempOp = operatorStack.get(index);
+//                    String tempInt = integerStack.get(indexIntPrev-1);
+//                    String tempInt1 = integerStack.get(indexIntPrev);
+//                    String tempInt2 = integerStack.get(indexIntLast);
+//                    operatorStack.set(index,currentToken.spelling);
+//                    integerStack.set(indexIntPrev-1,tempInt1);
+//                    integerStack.set(indexIntPrev,tempInt2);
+//                    integerStack.set(indexIntLast,tempInt);
+//                    operatorStack.set(operatorStack.size(),tempOp);
+//                    --index;
+//                }
+//            }
+//        }
+//    }
 
     private Expression parseBinaryExpression()
     {
