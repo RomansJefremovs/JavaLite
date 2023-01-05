@@ -49,6 +49,11 @@ public class Checker implements Visitor {
     }
 
     @Override
+    public Object visitBinaryExpression(BinaryExpression o, Object arg) {
+        return null;
+    }
+
+    @Override
     public Object visitReadInteger(ReadInteger o, Object arg) {
         return null;
     }

@@ -186,7 +186,7 @@ public class ParserOperatorPrecedence {
                 accept(TokenKind.IS);
                 //Now we need to take an expressionList
 
-                intExpressionList = parseIntegerExpression();
+                //intExpressionList = parseIntegerExpression();
                 //*this code **//
                 String value = currentToken.spelling;
                 accept(TokenKind.INTEGERLITERAL);
@@ -235,60 +235,6 @@ public class ParserOperatorPrecedence {
         }
     }
 
-
-    private ExpList parseIntegerExpressionWithStacks() {
-        Stack<String> integerStack = new Stack<>();
-        Stack<String> operatorStack = new Stack<>();
-
-        while (currentToken.kind == TokenKind.INTEGERLITERAL || currentToken.kind == TokenKind.OPERATOR)
-        {
-            if(currentToken.kind == TokenKind.INTEGERLITERAL)
-            {
-                integerStack.add(currentToken.spelling);
-                accept(TokenKind.INTEGERLITERAL);
-            }
-            if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS || currentToken.kind == TokenKind.MINUS || currentToken.kind == TokenKind.PLUS )
-            {
-                operatorStack.add(currentToken.spelling);
-                accept(TokenKind.OPERATOR);
-            }
-        }
-
-        //integerStack = [1, 2, 3, 4]
-        //operatorStack = [+, +, *]
-
-        //WHILE STACK IS NOT EMPTY
-        String tempOp = operatorStack.pop();
-        if(Objects.equals(tempOp, "multiply")) { //or rest
-            String tempNum = integerStack.pop();
-            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(tempNum)),
-                    new IntLitExpression(new IntegerLiteral(integerStack.pop())));
-        }
-        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("PLUS") ||
-                Objects.equals(tempOp, "PLUS") && operatorStack.peek().isEmpty() ) {
-            String firstNum = integerStack.pop();
-            String secondNum = integerStack.pop();
-            new BinaryExpression(new Operator(tempOp), new IntLitExpression(new IntegerLiteral(firstNum)),
-                    new IntLitExpression(new IntegerLiteral(secondNum)));
-        }
-        if(Objects.equals(tempOp, "PLUS") && operatorStack.peek().equals("MULTIPLY")) {
-
-        }
-
-    }
-
-    private ExpList parseIntegerExpression() {
-        ExpList expList = new ExpList();
-        Expression tempBinary = parseBinaryExpression();
-        expList.exp.add(tempBinary);
-
-        Expression tempInt;
-
-        if(currentToken.kind == TokenKind.MULTIPLY || currentToken.kind == TokenKind.DIVIDE || currentToken.kind == TokenKind.MODULUS) {
-            expList.exp.lastElement()
-        }
-
-    }
 
     private Expression parseBinaryExpression()
     {

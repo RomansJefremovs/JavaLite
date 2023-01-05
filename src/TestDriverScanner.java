@@ -22,14 +22,10 @@ public class TestDriverScanner
     public static void main( String args[] )
     {
         JFileChooser fc = new JFileChooser( EXAMPLES_DIR );
-        System.out.println("1");
         if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
-            System.out.println("2");
             SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
             Scanner s = new Scanner( in );
-            System.out.println("3");
             Token t = s.scan();
-            System.out.println("4");
             while( t.kind != TokenKind.EOT ) {
                 System.out.println( t.kind + " " + t.spelling );
 
