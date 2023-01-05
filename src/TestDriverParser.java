@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class TestDriverParser
 {
-    private static final String EXAMPLES_DIR = "C:\\Users\\roman\\Desktop\\School\\CMC\\TestProgram1.txt";
+    private static final String EXAMPLES_DIR = "C:\\Users\\Sjunn\\OneDrive\\Skrivebord\\CMC";
 
 
     public static void main( String args[] )

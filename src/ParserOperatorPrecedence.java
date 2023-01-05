@@ -67,7 +67,7 @@ public class ParserOperatorPrecedence {
                     System.out.println( "Cant start with a WordOperator" + currentToken.spelling );
                 ExpList expList = parseBooleanOrMethodExpressionList();
                 accept(TokenKind.RIGHTPARAN);
-                accept(TokenKind.LEFTCURLY);
+                //accept(TokenKind.LEFTCURLY);
                 Block block = parseBlock();
                 accept(TokenKind.RIGHTCURLY);
                 return new IfStatement(expList, block);

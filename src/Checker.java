@@ -35,11 +35,20 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitDeclarations(Declarations d, Object arg) {
+
+        for( Declaration decl: d.dec ) {
+            decl.visit( this, null );
+        }
+
+
         return null;
     }
 
     @Override
     public Object visitBooleanDeclaration(BooleanDeclaration v, Object arg) {
+        String id = (String) v.value.visit( this, null );
+        idTable.enter(id, v);
+        v.expList.visit(this, null);
         return null;
     }
 
@@ -70,7 +79,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitOperator( Operator o, Object arg) {
-        return null;
+        return o.spelling;
     }
 
     @Override
@@ -85,17 +94,32 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitIdentifier( Identifier i, Object arg) {
-        return null;
+        return i.spelling;
     }
 
     @Override
     public Object visitExpList( ExpList e, Object arg) {
-        return null;
+        Vector<Type> types = new Vector<>();
+
+        for( Expression exp: e.exp )
+            types.add( (Type) exp.visit( this, null ) );
+
+        return types;
     }
 
     @Override
     public Object visitOperatorLitExpression( OperatorLitExpression i, Object arg) {
-        return null;
+        i.literal.visit( this, null );
+        String operator = (String) i.literal.visit( this, null );
+
+        if( operator.equals( "plus" ) || operator.equals( "minus" ) || operator.equals("modulo") || operator.equals("divide") || operator.equals("multiply") )
+        {
+            return new Type(true);
+        }
+        else {
+            return new Type(false);
+        }
+
     }
 
     @Override
@@ -105,6 +129,12 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitIdentifierExpression( IdentifierExpression i, Object arg) {
+        String id = (String) i.literal.visit( this, null );
+        Declaration d = idTable.retrieve(id);
+        if(d == null)
+            System.out.println( id + " is not declared" );
+
+
         return null;
     }
 
@@ -130,6 +160,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitIfStatement( IfStatement i, Object arg) {
+        i.expList.visit(this, null);
         return null;
     }
 
@@ -140,6 +171,8 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitStatements( Statements s, Object arg) {
+        for( Statement stat: s.stat )
+            stat.visit( this, null );
         return null;
     }
 

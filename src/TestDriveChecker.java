@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class TestDriveChecker
 {
-    private static final String EXAMPLES_DIR = "c:\\usr\\undervisning\\CMC\\IntLang\\examples";
+    private static final String EXAMPLES_DIR = "C:\\Users\\Sjunn\\OneDrive\\Skrivebord\\CMC";
 
 
     public static void main( String args[] )
@@ -19,6 +19,7 @@ public class TestDriveChecker
 
             AST ast = (AST) p.parseProgram();
             c.check( (Program) ast );
+            new ASTViewer( ast );
         }
     }
 }
