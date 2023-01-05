@@ -71,7 +71,7 @@ public class Parser {
                     System.out.println( "Cant start with a WordOperator" );
                 parseExpressions();
                 accept(TokenKind.RIGHTPARAN);
-                accept(TokenKind.LEFTCURLY);
+                //accept(TokenKind.LEFTCURLY);
                 parseBlock();
                 accept(TokenKind.RIGHTCURLY);
                 break;

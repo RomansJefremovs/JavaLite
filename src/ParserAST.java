@@ -66,7 +66,7 @@ public class ParserAST {
                     System.out.println( "Cant start with a WordOperator" + currentToken.spelling );
                 ExpList expList = parseExpressions();
                 accept(TokenKind.RIGHTPARAN);
-                accept(TokenKind.LEFTCURLY);
+                //accept(TokenKind.LEFTCURLY);
                 Block block = parseBlock();
                 accept(TokenKind.RIGHTCURLY);
                 return new IfStatement(expList, block);

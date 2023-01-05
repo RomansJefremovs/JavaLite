@@ -84,7 +84,7 @@ public class ASTViewer
 		} else if( ast instanceof Operator ) {
 			node.setUserObject( "Operator " + ((Operator)ast).spelling );
 		} else if ( ast instanceof BooleanLiteral ) {
-			node.setUserObject( "BooleanLiteral " + ((Operator)ast).spelling );
+			node.setUserObject( "BooleanLiteral " + ((BooleanLiteral)ast).spelling );
 		} else if(ast instanceof BooleanDeclaration) {
 			node.setUserObject( "BooleanDeclaration" );
 			node.add( createTree( ((BooleanDeclaration)ast).value ) );
