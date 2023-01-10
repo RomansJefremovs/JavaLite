@@ -14,11 +14,12 @@ public class TestDriveChecker
         if( fc.showOpenDialog( null ) == fc.APPROVE_OPTION ) {
             SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
             Scanner s = new Scanner( in );
-            ParserOperatorPrecedence p = new ParserOperatorPrecedence( s );
+            ParserAST p = new ParserAST( s );
             Checker c = new Checker();
 
             AST ast = (AST) p.parseProgram();
             c.check( (Program) ast );
+            new ASTViewer( ast );
         }
     }
 }

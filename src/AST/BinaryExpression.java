@@ -5,8 +5,9 @@
  * 22.10.2006 visit()
  * 01.10.2006 Original version
  */
- 
+
 package AST;
+
 import AST.*;
 import AST.Visitor;
 
@@ -18,8 +19,9 @@ public class BinaryExpression
 	public Operator operator;
 	public Expression operand1;
 	public Expression operand2;
-	
-	
+
+
+
 	public BinaryExpression(Operator operator, Expression operand1, Expression operand2 )
 	{
 		this.operator = operator;
