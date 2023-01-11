@@ -108,7 +108,6 @@ public class Checker implements Visitor {
             System.out.println("right subexpression is of wrong type");
             return new Type(Type.ERROR);
         }
-
         return t1;
     }
 

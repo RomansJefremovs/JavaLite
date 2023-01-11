@@ -7,15 +7,13 @@
  */
  
 package AST;
-import AST.Visitor;
-
 public class FunctionDeclaration
 	extends Declaration
 {
 	public Identifier name;
 	public Declarations params;
 	public Block block;
-
+	public Address address;
 	
 	public FunctionDeclaration(Identifier name, Declarations params,
                                Block block )
@@ -24,7 +22,6 @@ public class FunctionDeclaration
 		this.params = params;
 		this.block = block;
 	}
-
 
 	public Object visit(Visitor v, Object arg )
 	{

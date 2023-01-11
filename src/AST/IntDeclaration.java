@@ -1,9 +1,10 @@
 package AST;
-import AST.Visitor;
+
 public class IntDeclaration  extends Declaration {
 
     public Identifier name;
     public IntegerLiteral value;
+    public Address adr;
 
 
     public IntDeclaration( Identifier name, IntegerLiteral value )

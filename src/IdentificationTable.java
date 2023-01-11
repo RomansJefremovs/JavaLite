@@ -4,13 +4,9 @@ import AST.Declaration;
 public class IdentificationTable {
     private Vector<IdEntry> table = new Vector<IdEntry>();
     private int level = 0;
-
-
     public IdentificationTable()
     {
     }
-
-
     public void enter( String id, Declaration attr )
     {
         IdEntry entry = find( id );
@@ -20,25 +16,18 @@ public class IdentificationTable {
         else
             table.add( new IdEntry( level, id, attr ) );
     }
-
-
     public Declaration retrieve( String id )
     {
         IdEntry entry = find( id );
-
         if( entry != null )
             return entry.attr;
         else
             return null;
     }
-
-
     public void openScope()
     {
         ++level;
     }
-
-
     public void closeScope()
     {
         int pos = table.size() - 1;
@@ -46,11 +35,8 @@ public class IdentificationTable {
             table.remove( pos );
             pos--;
         }
-
         level--;
     }
-
-
     private IdEntry find( String id )
     {
         for( int i = table.size() - 1; i >= 0; i-- )
